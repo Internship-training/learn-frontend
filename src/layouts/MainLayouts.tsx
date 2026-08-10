@@ -1,18 +1,23 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
 
 function MainLayout() {
   return (
     <>
-      <header>
-        <Header />
-      </header>
+      <div className="max-w-[1920px] mx-auto">
+        <header>
+          <Header />
+        </header>
 
-      <main>
-        <Outlet />
-      </main>
+        <main>
+          <Outlet />
+        </main>
 
-      <footer>Footer</footer>
+        <footer>
+          <Footer />
+        </footer>
+      </div>
     </>
   );
 }

@@ -5,7 +5,7 @@ import { HiSparkles } from "react-icons/hi";
 const Hero = () => {
   return (
     <section className="relative overflow-hidden bg-[#f8f9ff]">
-      <div className="container mx-auto flex min-h-screen items-center justify-center px-6">
+      <div className="container mx-auto flex mt-40 items-center justify-center px-6">
         <div className="max-w-4xl text-center">
           {/* Badge */}
           <motion.div
