@@ -8,6 +8,7 @@ import Register from "../page/auth/Register";
 import Mentor from "../page/Mentor";
 import Career from "../page/Career";
 import Curriculam from "../page/Curriculam";
+import About from "../page/About";
 // import Programs from "../page/Programs";
 
 const appRouter = createBrowserRouter([
@@ -35,10 +36,10 @@ const appRouter = createBrowserRouter([
             path: "/career-support",
             element: <Career />
           },
-          // {
-          //   path: "/programs",
-          //   element: <Programs />
-          // },
+          {
+            path: "/about",
+            element: <About />
+          },
           {
             path: "/login",
             element: <Login />
