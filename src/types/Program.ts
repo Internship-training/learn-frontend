@@ -1,5 +1,7 @@
 export interface ProgramItem {
+  id: string;
   tag: string;
+  slug: string;
   title: string;
   description: string;
   weeks: string;

@@ -57,7 +57,7 @@ const supportLinks: FooterLink[] = [
   },
   {
     label: "Contact Support",
-    href: "/contact",
+    href: "/support",
   },
   {
     label: "Privacy Policy",

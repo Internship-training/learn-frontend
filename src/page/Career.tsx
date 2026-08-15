@@ -9,6 +9,7 @@ import {
   HiOutlineUserGroup,
   HiOutlineVideoCamera,
 } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 // ========================================
 // Types
@@ -157,11 +158,11 @@ const Career = () => {
             >
               {/* Badge */}
 
-              <span className="inline-flex items-center rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600">
+              <Link to="/support" className="inline-flex items-center rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600">
                 <HiOutlineBriefcase className="mr-2 text-lg" />
 
                 Career Support
-              </span>
+              </Link>
 
               {/* Heading */}
 
@@ -186,14 +187,13 @@ const Career = () => {
               {/* Buttons */}
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <button
-                  type="button"
+                <Link to="/support"
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-700"
                 >
-                  Get Career Support
+                  Get Support
 
                   <HiOutlineArrowRight className="text-lg" />
-                </button>
+                </Link>
 
                 <button
                   type="button"
