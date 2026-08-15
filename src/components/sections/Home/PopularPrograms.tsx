@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronLeft, ChevronRight, Clock, Star } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Star,
+} from "lucide-react";
 import type { ProgramItem } from "../../../types/Program";
+import { Link } from "react-router-dom";
 
 interface PopularProgramsProps {
   programs: ProgramItem[];
@@ -26,7 +33,7 @@ const PopularPrograms: React.FC<PopularProgramsProps> = ({ programs }) => {
 
   const visiblePrograms = programs.slice(
     currentIndex,
-    currentIndex + ITEMS_PER_PAGE
+    currentIndex + ITEMS_PER_PAGE,
   );
 
   return (
@@ -114,59 +121,139 @@ const PopularPrograms: React.FC<PopularProgramsProps> = ({ programs }) => {
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -60 }}
-            transition={{ duration: 0.4 }}
+            transition={{
+              duration: 0.45,
+              ease: "easeOut",
+            }}
             className="grid grid-cols-1 gap-6 md:grid-cols-3"
           >
             {visiblePrograms.map((program, index) => (
-              <motion.div
-                key={program.title}
-                initial={{ opacity: 0, y: 40 }}
+              <motion.article
+                key={program.id}
+                initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
                   duration: 0.5,
                   delay: index * 0.1,
+                  ease: "easeOut",
                 }}
                 whileHover={{
                   y: -8,
-                  scale: 1.02,
                 }}
-                className="overflow-hidden rounded-3xl bg-linear-to-br from-slate-900 via-teal-900 to-slate-900 p-6 shadow-xl"
+                className="group relative flex min-h-117.5 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_8px_30px_rgba(15,23,42,0.08)] transition-shadow duration-300 hover:shadow-[0_18px_45px_rgba(15,23,42,0.14)]"
               >
-                <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white">
-                  {program.tag}
-                </span>
+                {/* Top Section */}
+                <div className="relative overflow-hidden bg-linear-to-br from-slate-950 via-[#0B3157] to-[#0E6AFA] px-6 pb-8 pt-6">
+                  {/* Decorative Glow */}
+                  <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-3xl transition-transform duration-500 group-hover:scale-150" />
 
-                <h3 className="mt-5 text-2xl font-bold text-white">
-                  {program.title}
-                </h3>
+                  <div className="pointer-events-none absolute -bottom-16 -left-10 h-32 w-32 rounded-full bg-cyan-400/10 blur-3xl" />
 
-                <p className="mt-3 text-sm leading-6 text-white/80">
-                  {program.description}
-                </p>
+                  {/* Tag */}
+                  <span className="relative inline-flex rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur-md">
+                    {program.tag}
+                  </span>
 
-                <div className="mt-8 flex items-center justify-between text-white">
-                  <div className="flex items-center gap-2">
-                    <Clock size={16} />
-                    <span className="text-sm">{program.weeks}</span>
-                  </div>
+                  {/* Title */}
+                  <h3 className="relative mt-5 min-h-16 text-2xl font-bold leading-tight tracking-tight text-white">
+                    {program.title}
+                  </h3>
 
-                  <div className="flex items-center gap-1">
-                    <Star size={16} fill="currentColor" />
-                    <span className="text-sm">{program.rating}</span>
-                    <span className="text-sm text-white/70">
-                      ({program.reviews})
-                    </span>
-                  </div>
+                  {/* Description */}
+                  <p className="relative mt-3 line-clamp-3 min-h-18 text-sm leading-6 text-white/75">
+                    {program.description}
+                  </p>
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.96 }}
-                  className="mt-6 w-full rounded-xl bg-white py-3 font-semibold text-slate-900"
-                >
-                  Learn More
-                </motion.button>
-              </motion.div>
+                {/* Content */}
+                <div className="flex flex-1 flex-col px-6 py-6">
+                  {/* Course Meta */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* Duration */}
+                    <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 transition-colors duration-300 group-hover:border-blue-100 group-hover:bg-blue-50/50">
+                      <div className="flex items-center gap-2 text-slate-400">
+                        <Clock
+                          size={17}
+                          className="transition-colors duration-300 group-hover:text-[#0E6AFA]"
+                        />
+
+                        <span className="text-xs font-medium">Duration</span>
+                      </div>
+
+                      <p className="mt-1.5 text-sm font-bold text-slate-800">
+                        {program.weeks}
+                      </p>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 transition-colors duration-300 group-hover:border-amber-100 group-hover:bg-amber-50/50">
+                      <div className="flex items-center gap-2 text-slate-400">
+                        <Star
+                          size={17}
+                          fill="currentColor"
+                          className="text-amber-500"
+                        />
+
+                        <span className="text-xs font-medium">Rating</span>
+                      </div>
+
+                      <div className="mt-1.5 flex items-center gap-1.5">
+                        <span className="text-sm font-bold text-slate-800">
+                          {program.rating}
+                        </span>
+
+                        <span className="text-xs text-slate-400">
+                          ({program.reviews})
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Rating Highlight */}
+                  <div className="mt-5 flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <div className="flex -space-x-1">
+                        <div className="h-7 w-7 rounded-full border-2 border-white bg-slate-300" />
+                        <div className="h-7 w-7 rounded-full border-2 border-white bg-slate-400" />
+                        <div className="h-7 w-7 rounded-full border-2 border-white bg-slate-500" />
+                      </div>
+
+                      <span className="text-xs font-medium text-slate-500">
+                        Trusted by learners
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1 text-xs font-semibold text-slate-700">
+                      <Star
+                        size={13}
+                        fill="currentColor"
+                        className="text-amber-500"
+                      />
+
+                      {program.rating}
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="my-6 h-px bg-slate-100" />
+
+                  {/* CTA */}
+                  <Link
+                    to={`/curriculum/${program.slug}`}
+                    aria-label={`Explore ${program.title} curriculum`}
+                    className="group/button mt-auto inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0E6AFA] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0059D6] hover:shadow-[0_10px_25px_rgba(14,106,250,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0E6AFA]/40 focus-visible:ring-offset-2 active:translate-y-0"
+                  >
+                    <span>Explore Curriculum</span>
+
+                    <ArrowRight
+                      size={18}
+                      strokeWidth={2}
+                      className="transition-transform duration-300 group-hover/button:translate-x-1"
+                      aria-hidden="true"
+                    />
+                  </Link>
+                </div>
+              </motion.article>
             ))}
           </motion.div>
         </AnimatePresence>

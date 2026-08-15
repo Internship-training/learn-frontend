@@ -9,6 +9,8 @@ import Mentor from "../page/Mentor";
 import Career from "../page/Career";
 import Curriculam from "../page/Curriculam";
 import About from "../page/About";
+import CourseDetails from "../page/CourseDetails";
+import Support from "../page/Support";
 // import Programs from "../page/Programs";
 
 const appRouter = createBrowserRouter([
@@ -32,10 +34,23 @@ const appRouter = createBrowserRouter([
             path: "/curriculum",
             element: <Curriculam />
           },
+            // Dynamic course details
+          {
+            path: "curriculum/:slug",
+            //  path: "curriculum/:id/:slug",
+            element: <CourseDetails />,
+          },
+          
           {
             path: "/career-support",
             element: <Career />
           },
+
+           {
+            path: "/support",
+            element: <Support />
+          },
+          
           {
             path: "/about",
             element: <About />
