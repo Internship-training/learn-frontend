@@ -7,11 +7,18 @@ import {
   HiOutlineStar,
   HiOutlineUserGroup,
 } from "react-icons/hi";
+import { Link } from "react-router-dom";
+
+// -----------------------------------------------------------------------------
+// Mentor Data
+// -----------------------------------------------------------------------------
 
 const mentors = [
   {
     id: 1,
     name: "Rahul Sharma",
+    slug: "rahul-sharma",
+    department: "Full Stack Development",
     role: "Senior Full Stack Developer",
     company: "Microsoft",
     experience: "8+ Years",
@@ -24,6 +31,8 @@ const mentors = [
   {
     id: 2,
     name: "Priya Verma",
+    slug: "priya-verma",
+    department: "UI/UX Design",
     role: "Product Designer",
     company: "Adobe",
     experience: "7+ Years",
@@ -36,6 +45,8 @@ const mentors = [
   {
     id: 3,
     name: "Amit Kumar",
+    slug: "amit-kumar",
+    department: "Software Development",
     role: "Software Engineer",
     company: "Google",
     experience: "9+ Years",
@@ -48,6 +59,8 @@ const mentors = [
   {
     id: 4,
     name: "Sneha Singh",
+    slug: "sneha-singh",
+    department: "Data Science & AI",
     role: "Data Scientist",
     company: "Amazon",
     experience: "6+ Years",
@@ -60,6 +73,8 @@ const mentors = [
   {
     id: 5,
     name: "Arjun Mehta",
+    slug: "arjun-mehta",
+    department: "Backend Development",
     role: "Backend Engineer",
     company: "Flipkart",
     experience: "7+ Years",
@@ -72,6 +87,8 @@ const mentors = [
   {
     id: 6,
     name: "Neha Kapoor",
+    slug: "neha-kapoor",
+    department: "Frontend Development",
     role: "Frontend Engineer",
     company: "Meta",
     experience: "6+ Years",
@@ -83,52 +100,70 @@ const mentors = [
   },
 ];
 
-const categories = [
-  "All",
-  "Development",
-  "Design",
-  "Data Science",
-  "Career",
-];
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 const Mentor = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
 
-  const filteredMentors = useMemo(() => {
-    return mentors.filter((mentor) => {
-      const searchValue = search.toLowerCase();
+  // ---------------------------------------------------------------------------
+  // Dynamic Categories
+  // ---------------------------------------------------------------------------
 
+  const categories = useMemo(() => {
+    const departments = mentors
+      .map((mentor) => mentor.department)
+      .filter(Boolean);
+
+    return ["All", ...new Set(departments)];
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Dynamic Search + Category Filter
+  // ---------------------------------------------------------------------------
+
+  const filteredMentors = useMemo(() => {
+    const searchValue = search.trim().toLowerCase();
+
+    return mentors.filter((mentor) => {
       const matchesSearch =
+        !searchValue ||
         mentor.name.toLowerCase().includes(searchValue) ||
         mentor.role.toLowerCase().includes(searchValue) ||
         mentor.company.toLowerCase().includes(searchValue) ||
-        mentor.expertise.some((item) =>
-          item.toLowerCase().includes(searchValue)
+        mentor.department.toLowerCase().includes(searchValue) ||
+        mentor.expertise.some((skill) =>
+          skill.toLowerCase().includes(searchValue)
         );
 
       const matchesCategory =
-        category === "All" ||
-        (category === "Development" &&
-          mentor.expertise.some((item) =>
-            ["React.js", "Node.js", "Next.js", "JavaScript", "TypeScript", "System Design", "MongoDB", "AWS"].includes(item)
-          )) ||
-        (category === "Design" &&
-          mentor.expertise.some((item) =>
-            ["UI/UX", "Figma", "Design Systems"].includes(item)
-          )) ||
-        (category === "Data Science" &&
-          mentor.expertise.some((item) =>
-            ["Python", "Machine Learning", "SQL"].includes(item)
-          ));
+        category === "All" || mentor.department === category;
 
       return matchesSearch && matchesCategory;
     });
   }, [search, category]);
 
+  // ---------------------------------------------------------------------------
+  // Reset Filters
+  // ---------------------------------------------------------------------------
+
+  const handleResetFilters = () => {
+    setSearch("");
+    setCategory("All");
+  };
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <main className="min-h-screen bg-white text-slate-900">
+      {/* ------------------------------------------------------------------ */}
       {/* Hero Section */}
+      {/* ------------------------------------------------------------------ */}
+
       <section className="relative overflow-hidden bg-slate-50">
         <div className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-blue-100/60 blur-3xl" />
         <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-blue-50 blur-3xl" />
@@ -158,7 +193,10 @@ const Mentor = () => {
         </div>
       </section>
 
+      {/* ------------------------------------------------------------------ */}
       {/* Search & Filter */}
+      {/* ------------------------------------------------------------------ */}
+
       <section className="border-b border-slate-100 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-7 lg:px-8">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
@@ -175,7 +213,7 @@ const Mentor = () => {
               />
             </div>
 
-            {/* Categories */}
+            {/* Dynamic Categories */}
             <div className="flex gap-2 overflow-x-auto pb-1">
               {categories.map((item) => (
                 <button
@@ -196,9 +234,13 @@ const Mentor = () => {
         </div>
       </section>
 
+      {/* ------------------------------------------------------------------ */}
       {/* Mentors */}
+      {/* ------------------------------------------------------------------ */}
+
       <section className="bg-white py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          {/* Header */}
           <div className="mb-10 flex items-end justify-between">
             <div>
               <p className="text-sm font-semibold uppercase tracking-wider text-blue-600">
@@ -211,10 +253,12 @@ const Mentor = () => {
             </div>
 
             <p className="hidden text-sm text-slate-500 sm:block">
-              {filteredMentors.length} mentors available
+              {filteredMentors.length}{" "}
+              {filteredMentors.length === 1 ? "mentor" : "mentors"} available
             </p>
           </div>
 
+          {/* Results */}
           {filteredMentors.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filteredMentors.map((mentor, index) => (
@@ -230,8 +274,8 @@ const Mentor = () => {
                   whileHover={{ y: -6 }}
                   className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100/40"
                 >
-                  {/* Profile */}
                   <div className="p-6">
+                    {/* Profile */}
                     <div className="flex items-start gap-4">
                       <img
                         src={mentor.image}
@@ -251,6 +295,11 @@ const Mentor = () => {
                         <p className="mt-1 text-sm text-slate-500">
                           {mentor.company}
                         </p>
+
+                        {/* Department */}
+                        <span className="mt-2 inline-flex rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
+                          {mentor.department}
+                        </span>
                       </div>
                     </div>
 
@@ -261,13 +310,17 @@ const Mentor = () => {
                           <HiOutlineStar className="text-yellow-500" />
                           {mentor.rating}
                         </div>
-                        <p className="mt-1 text-xs text-slate-500">Rating</p>
+
+                        <p className="mt-1 text-xs text-slate-500">
+                          Rating
+                        </p>
                       </div>
 
                       <div className="text-center">
                         <p className="text-sm font-bold text-slate-900">
                           {mentor.students}
                         </p>
+
                         <p className="mt-1 text-xs text-slate-500">
                           Students
                         </p>
@@ -277,7 +330,10 @@ const Mentor = () => {
                         <p className="text-sm font-bold text-slate-900">
                           {mentor.experience}
                         </p>
-                        <p className="mt-1 text-xs text-slate-500">Experience</p>
+
+                        <p className="mt-1 text-xs text-slate-500">
+                          Experience
+                        </p>
                       </div>
                     </div>
 
@@ -294,18 +350,19 @@ const Mentor = () => {
                     </div>
 
                     {/* CTA */}
-                    <button
-                      type="button"
+                    <Link
+                      to={`/mentors/${mentor.slug}`}
                       className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition group-hover:border-blue-600 group-hover:bg-blue-600 group-hover:text-white"
                     >
                       View Profile
                       <HiOutlineArrowRight className="text-lg transition group-hover:translate-x-1" />
-                    </button>
+                    </Link>
                   </div>
                 </motion.article>
               ))}
             </div>
           ) : (
+            /* Empty State */
             <div className="rounded-2xl border border-dashed border-slate-300 py-20 text-center">
               <HiOutlineSearch className="mx-auto text-4xl text-slate-300" />
 
@@ -314,14 +371,26 @@ const Mentor = () => {
               </h3>
 
               <p className="mt-2 text-sm text-slate-500">
-                Try searching with a different name, skill or company.
+                Try searching with a different name, skill, company or
+                department.
               </p>
+
+              <button
+                type="button"
+                onClick={handleResetFilters}
+                className="mt-5 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                Clear Filters
+              </button>
             </div>
           )}
         </div>
       </section>
 
+      {/* ------------------------------------------------------------------ */}
       {/* CTA */}
+      {/* ------------------------------------------------------------------ */}
+
       <section className="bg-slate-950 py-16">
         <div className="mx-auto max-w-5xl px-6 text-center lg:px-8">
           <HiOutlineBriefcase className="mx-auto text-4xl text-blue-400" />
