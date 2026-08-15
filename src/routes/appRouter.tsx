@@ -11,6 +11,7 @@ import Curriculam from "../page/Curriculam";
 import About from "../page/About";
 import CourseDetails from "../page/CourseDetails";
 import Support from "../page/Support";
+import MentorDetails from "../page/MentorDetails";
 // import Programs from "../page/Programs";
 
 const appRouter = createBrowserRouter([
@@ -29,6 +30,10 @@ const appRouter = createBrowserRouter([
           {
             path: "/mentors",
             element: <Mentor />
+          },
+          {
+            path: "/mentors/:slug",
+            element: <MentorDetails />
           },
           {
             path: "/curriculum",
