@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 // import MainLayouts from "../layouts/MainLayouts";
 import App from "../App";
 import MainLayouts from "../layouts/MainLayouts";
+import DashboardLayout from "../layouts/StudentDashboardLayout";
 import Home from "../page/Home";
 import Login from "../page/auth/Login";
 import Register from "../page/auth/Register";
@@ -13,6 +14,13 @@ import CourseDetails from "../page/CourseDetails";
 import Support from "../page/Support";
 import MentorDetails from "../page/MentorDetails";
 // import Programs from "../page/Programs";
+
+
+import Dashboard from "../page/studentDashboard/Dashboard";
+import TrainingModules from "../page/studentDashboard/TrainingModules";
+import MyInternships from "../page/studentDashboard/MyInternships";
+import Mentorship from "../page/studentDashboard/Mentorship";
+import Analytics from "../page/studentDashboard/Analytics";
 
 const appRouter = createBrowserRouter([
   {
@@ -72,6 +80,19 @@ const appRouter = createBrowserRouter([
       },
       // PRIVATE ROUTES.
       // REST OF THE ROUTES.
+
+
+      {
+        path: "/student",
+        element: <DashboardLayout />,
+        children: [
+          { path: "dashboard",index: true, element: <Dashboard /> },       // /student
+          { path: "modules", element: <TrainingModules /> },     // /student/modules
+          { path: "internships", element: <MyInternships /> },   // /student/internships
+          { path: "mentorship", element: <Mentorship /> },       // /student/mentorship
+          { path: "analytics", element: <Analytics /> },         // /student/analytics
+        ],
+      },
      ]
    },
 ]);
